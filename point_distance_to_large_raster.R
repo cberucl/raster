@@ -12,21 +12,28 @@
 #####                                          #####
 ####################################################
 ####################################################
-
+##### Ignore the below hashed out code unless  #####
+##### you are running on Myriad or other       #####
+##### cluster                                  #####
+####################################################
 # wd <- getwd()
 # .libPaths(c(wd, .libPaths()))
+# 
+# install.packages('SearchTrees', repos = "http://cran.r-project.org")
+# 
+# dir.create("/home/ucfafsp/Scratch/temp_files")  # Use if running on Myriad - rasters are often stored in a temp folder so if handling a lot of them you need to be
+#                                                   careful your temp folder doesn't fill up
+# 
+# rasterOptions(tmpdir = "/home/ucfafsp/Scratch/temp_files")  #Setting the raster temp file directory
+##################################################
+##################################################
 
-#install.packages('SearchTrees', repos = "http://cran.r-project.org")
 
 library(raster)
 library(tidyverse)
 library(SearchTrees)
 library(parallel)
 
-#dir.create("/home/ucfafsp/Scratch/temp_files")  # Use if running on Myriad - rasters are often stored in a temp folder so if handling a lot of them you need to be
-#careful your temp folder doesn't fill up
-
-#rasterOptions(tmpdir = "/home/ucfafsp/Scratch/temp_files")  #Setting the raster temp file directory
 
 bs <-
   c(0.1, 0.5, 1, 2)   # Range of buffer sizes for the function to iterate, measured in degrees. I
@@ -125,6 +132,8 @@ pred_u <-
 fun_out <-
   apply(pred_u, MARGIN = 1 , FUN = hansen_dist_fun)  #Applying the function through the matrix of lon/lats
 
+all_dist <- do.call("rbind", fun_out)  #rbinding the results together
+
 
 # cl <- makeCluster(getOption("cl.cores", detectCores()-1))
 # clusterExport(cl=cl, varlist=c("hansen", "bs", "buff_crop", "hansen_dist_fun", "raster"), envir=environment())
@@ -132,8 +141,6 @@ fun_out <-
 # fun_out <-
 #   parApply(cl, pred_u[azores_rows,], MARGIN = 1 , FUN = hansen_dist_fun)  #Applying the function through the matrix of lon/lats
 # 
-all_dist <- do.call("rbind", fun_out)  #rbinding the results together
-
 #write.csv(dist_out, "hans_min_dist_sp_90_tree.csv", row.names = FALSE)
 
 
