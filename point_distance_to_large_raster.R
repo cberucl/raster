@@ -7,7 +7,7 @@
 ##### very large raster, e.g.the hansen forest #####
 ##### raster dataset.                          #####
 #####                                          #####
-##### Written by Fiona Spooner                 #####
+##### Written by Fiona Spooner & Monica Ortiz  #####
 ##### for the BIOTA project                    ##### 
 #####                                          #####
 ####################################################
