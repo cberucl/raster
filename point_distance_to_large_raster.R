@@ -36,18 +36,17 @@ pred <- data.frame(pred$Longitude, pred$Latitude)
 names(pred) = c("lon", "lat")
 
 hansen <- raster("Hansen_reclass_90.tiff")   #  A raster to get distances from, should ideally be binary 1s and 0s where we are looking for distances to 1s 
-
+e<-extent(raster)
 
 buff_crop <- function(x, buff) {
   xmin <- x$lon - buff   #Adding the buffer to the point
   xmax <- x$lon + buff
   ymin <- x$lat - buff
   ymax <- x$lat + buff
-  xmin[xmin < -180] <-
-    -180    #Ensuring the extent of the crop does not go beyond the bounds of the original raster
-  xmax[xmax > 180] <- 180
-  ymin[ymin < -60] <- -60
-  ymax[ymax > 80] <- 80
+  xmin[xmin < round(e@xmin)] <- round(e@xmin)    #Ensuring the extent of the crop does not go beyond the bounds of the original raster
+  xmax[xmax > round(e@xmax)] <- round(e@xmax)
+  ymin[ymin < round(e@ymin)] <- round(e@ymin)
+  ymax[ymax > round(e@ymax)] <- round(e@ymax)
   
   
   test <- crop(hansen, raster::extent(c(xmin, xmax, ymin, ymax)))
