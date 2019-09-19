@@ -4,13 +4,12 @@
 ##### A function for calculating the distance  #####
 ##### between a set of locations e.g. PREDICTS #####  
 ##### sites and the nearest non-NA cell in a   #####  
-##### raster, e.g. a forest raster.            #####
-#####                                          #####
-#####                                          #####  
-#####                                          #####
+##### very large raster, e.g.the hansen forest #####
+##### raster dataset.                          #####
 #####                                          #####
 ####################################################
 ####################################################
+
 # wd <- getwd()
 # .libPaths(c(wd, .libPaths()))
 
