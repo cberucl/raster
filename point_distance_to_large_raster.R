@@ -7,8 +7,9 @@
 ##### very large raster, e.g.the hansen forest #####
 ##### raster dataset.                          #####
 #####                                          #####
-##### Written by Fiona Spooner & Monica Ortiz  #####
-##### for the BIOTA project                    #####
+##### By Fiona Spooner, Monica Ortiz &         #####
+##### Joe Millard for the BIOTA project        #####
+#####                                          #####
 #####                                          #####
 ####################################################
 ####################################################
@@ -28,6 +29,7 @@
 ##################################################
 ##################################################
 
+###test###
 
 library(raster)
 library(tidyverse)
@@ -77,6 +79,9 @@ buff_crop <- function(x, buff) {
 hansen_dist_fun <- function(x) {
   x <- data.frame(x[1], x[2])
   colnames(x) <- c("lon", "lat")
+ 
+  tryCatch({
+  
   extract_out <- raster::extract(hansen, x)
   extract_out[is.na(extract_out) |
                 extract_out == 255] <- 0   # This may need changing if your raster has different values. Here we are looking for 1s only
@@ -129,6 +134,13 @@ hansen_dist_fun <- function(x) {
   unlink(dirname(rasterTmpFile()), recursive = TRUE)  #Deletes raster temp files so they don't clog up the memory
   return(dist_out_df)
   
+  }, error = function(x){ 
+    dist_out_df <- data.frame("lon" = NA, "lat" = NA, "bs_out" = NA, "dist_out" = NA)
+    
+    count <<- count + 1
+    print(count)
+    return(dist_out_df)
+  })
 }
 
 pred_u <-
